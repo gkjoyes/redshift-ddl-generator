@@ -5,11 +5,14 @@ import json
 import sys
 import logging
 
+
+# ------------- logging level..
 LOG_FILENAME = 'work.log'
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler())
 
 
+# ------------- read configuration file..
 def read_conf(conf_file):
     """Reading conf done here"""
 
@@ -18,6 +21,7 @@ def read_conf(conf_file):
         return json.load(json_data_file)
 
 
+# ------------ mysql connection, read mysql table description is done here..
 def read_mysql_table_description(creds):
     """Reading description of mysql table done here"""
 
@@ -39,6 +43,7 @@ def read_mysql_table_description(creds):
         conn.close()
 
 
+# --------------generation of ddl corresponding to redshift is done here..
 def generate_ddl(table_info, creds):
     "Form mysql table info DDL generation is done here"
 
@@ -47,13 +52,24 @@ def generate_ddl(table_info, creds):
     print table_info
 
     text_file = open("redshift_ddl.sql", "w")
-    text_file.write("CREATE TABLE {0}.{1}(\n);".format(creds["redshift"]["schema"], creds["mysql_table"]))
+    text_file.write("CREATE TABLE {0}.{1}(".format(
+        creds["redshift"]["schema"], creds["mysql_table"]))
     for row in table_info:
-        print row[0], "\t", row[1]
+        if 'enum' in str(row[1]):
+            print "................contains.................."
+            print type(row[0])
+            print type(row[1])
+            print list(row[1][4:])
         
+        
+        text_file.write("\n\t"+row[0] + " " + row[1] + ",")
+
+        print row[0], "\t", row[1]
+    text_file.write("\n" + ");")
     text_file.close()
 
 
+# ------------main steps for ddl generation..
 def generate_ddl_start(file_name):
     "All steps for query generations"
 
@@ -62,6 +78,7 @@ def generate_ddl_start(file_name):
     generate_ddl(table_info, creds)
 
 
+# ------------main..
 if __name__ == '__main__':
 
     generate_ddl_start("conf.json")
