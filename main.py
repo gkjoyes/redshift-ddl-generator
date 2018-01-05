@@ -1,9 +1,10 @@
 """Redshift ddl generator from mysql table"""
 
-from mysql.connector import MySQLConnection, Error
 import json
 import sys
 import logging
+import re
+from mysql.connector import MySQLConnection, Error
 
 
 # ------------- logging level..
@@ -44,27 +45,46 @@ def read_mysql_table_description(creds):
 
 
 # --------------generation of ddl corresponding to redshift is done here..
-def generate_ddl(table_info, creds):
+def generate_ddl(table_info, creds, datatype_mapping):
     "Form mysql table info DDL generation is done here"
 
     logging.info("#Step : DDL generation is start...")
     print type(table_info)
     print table_info
 
+    # ---------result file
     text_file = open("redshift_ddl.sql", "w")
+
+    with open(datatype_mapping) as data_types:
+        original_data_type = json.load(data_types)
+
+    # --------start
     text_file.write("CREATE TABLE {0}.{1}(".format(
         creds["redshift"]["schema"], creds["mysql_table"]))
+
+    # --------table columns
     for row in table_info:
+
+        text_file.write("\n\t")
+        text_file.write(re.sub('(?<!^)(?=[A-Z])', '_', row[0]).lower())
+
+        index = row[1].find('(')
+        if index >= 0:
+            data_type = row[1][:index]
+        else:
+            data_type = row[1]
+
+        text_file.write("\t" + original_data_type[data_type])
+        # --------- datatype: enum
         if 'enum' in str(row[1]):
-            print "................contains.................."
-            print type(row[0])
-            print type(row[1])
-            print list(row[1][4:])
-        
-        
-        text_file.write("\n\t"+row[0] + " " + row[1] + ",")
+            enum_value = list(filter(lambda a: (
+                a != '\'' and a != ',' and a != '(' and a != ')'), (row[1][4:])))
+
+            enum_max_len = len(max(enum_value))
 
         print row[0], "\t", row[1]
+    
+    
     text_file.write("\n" + ");")
     text_file.close()
 
@@ -75,7 +95,7 @@ def generate_ddl_start(file_name):
 
     creds = read_conf(file_name)
     table_info = read_mysql_table_description(creds)
-    generate_ddl(table_info, creds)
+    generate_ddl(table_info, creds, "data_type_mapping.json")
 
 
 # ------------main..

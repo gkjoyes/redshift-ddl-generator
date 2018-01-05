@@ -1,9 +1,9 @@
 CREATE TABLE sample.employees(
-	empNo int(11),
-	birthDate date,
-	firstName varchar(14),
-	lastName varchar(16),
-	gender enum('M','F'),
-	hireDate date,
-	mail varchar(255),
+	emp_no	INT4
+	birth_date	DATE
+	first_name	VARCHAR
+	last_name	VARCHAR
+	gender	VARCHAR
+	hire_date	DATE
+	mail	VARCHAR
 );
