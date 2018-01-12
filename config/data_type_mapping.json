@@ -3,7 +3,7 @@
     "bigint unsigned": "NUMERIC(20, 0)",
     "binary": "VARCHAR",
     "bit": "INT8",
-    "blob": "VARCHAR(65535)",
+    "blob": "VARCHAR(MAX)",
     "bool": "INT2",
     "boolean": "INT2",
     "char": "VARCHAR",
