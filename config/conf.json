@@ -1,4 +1,5 @@
 {
+    "_comment": "db connection creditions given here..",
     "mysql": {
       "host": "192.168.0.2",
       "database": "test",
@@ -8,5 +9,5 @@
     "redshift":{
       "schema":"sample"
     },
-    "mysql_table":"employees"    
+    "mysql_table":"employees"  
 }
