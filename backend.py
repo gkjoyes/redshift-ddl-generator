@@ -1,7 +1,7 @@
 """all database connection and data processing is done here """
 
 import sys
-from mysql.connector import MySQLConnection, Error
+from mysql.connector import MySQLConnection, Error, errorcode
 
 
 # ------------ mysql connection, read mysql table description is done here..
@@ -19,8 +19,15 @@ def read_mysql_table_description(creds, logging):
             return cursor.fetchall()
 
     except Error as err:
-        logging.error('#Error : Connection error %s', err.errno)
-        sys.exit(1)
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            logging.error(
+                '#Error : Something is wrong with your user name or password')
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            logging.error('#Error : Database does not exist')
+        else:
+            logging.error('#Error : %s', err)
 
-    finally:
+        sys.exit(0)
+
+    else:
         conn.close()
