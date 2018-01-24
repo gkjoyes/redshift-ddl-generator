@@ -1,16 +1,9 @@
+
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
 INFO:root:#Step : DDL generation is start...
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading table description is start
-ERROR:root:#Error : Something is wrong with your user name or password
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading table description is start
-ERROR:root:#Error : Something is wrong with your user name or password
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading table description is start
-ERROR:root:#Error : Something is wrong with your user name or password
+INFO:root:#Step : DDL generation completed...
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
@@ -20,16 +13,9 @@ INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
 INFO:root:#Step : DDL generation is start...
 INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
 INFO:root:#Step : DDL generation is start...
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Error : Something went rough while reding conf file..
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
@@ -39,15 +25,20 @@ INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully
 INFO:root:#Step : DDL generation is start...
 INFO:root:#Step : Reading conf file is start
-INFO:root:#Error : Something went rough while reding conf file..
+INFO:root:#Step : Reading table description is start
+INFO:root:#Step : Mysql connection established successfully
+INFO:root:#Step : DDL generation is start...
+INFO:root:#Step : DDL generation completed...
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
+INFO:root:#Step : Mysql connection established successfully
+INFO:root:#Step : DDL generation is start...
+INFO:root:#Step : DDL generation completed...
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Step : Reading table description is start
-INFO:root:#Step : Reading conf file is start
-INFO:root:#Error : Something went rough while reding conf file..
+INFO:root:#Step : Mysql connection established successfully
+INFO:root:#Step : DDL generation is start...
+INFO:root:#Step : DDL generation completed...
 INFO:root:#Step : Reading conf file is start
 INFO:root:#Step : Reading table description is start
 INFO:root:#Step : Mysql connection established successfully

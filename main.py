@@ -8,8 +8,6 @@ from core import generate_ddl
 
 # ------------- logging level..
 LOG_FILENAME = 'work.log'
-CONF_FILE = 'config/conf.json'
-DATA_TYPE_MAPPING = 'config/data_type_mapping.json'
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -20,20 +18,23 @@ def read_conf(conf_file):
 
     logging.info("#Step : Reading conf file is start")
     try:
-        with open(conf_file) as json_data_file:
-            return json.load(json_data_file)
-    except:
-        logging.info("#Error : Something went rough while reding conf file..")
+        return json.load(open(conf_file))
+    except Exception as err:
+        logging.info("#Error : "+str(err))
         sys.exit(0)
-
 
 # ------------main steps for ddl generation..
 def generate_ddl_start():
     "All steps for query generations"
 
-    creds = read_conf(CONF_FILE)
+    # ------- file names
+    conf_file = 'config/conf.json'
+    data_type_mapping = 'config/data_type_mapping.json'
+
+    #-------- processing steps
+    creds = read_conf(conf_file)
     table_info = read_mysql_table_description(creds, logging)
-    generate_ddl(table_info, creds, DATA_TYPE_MAPPING, logging)
+    generate_ddl(table_info, creds, data_type_mapping, logging)
 
 
 # ------------main..

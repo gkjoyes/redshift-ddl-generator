@@ -10,12 +10,13 @@ def read_mysql_table_description(creds, logging):
 
     logging.info("#Step : Reading table description is start")
     try:
-        conn = MySQLConnection(**creds["mysql"])
+        conn = MySQLConnection(
+            user=creds["mysql"]["user"], password=creds["mysql"]["pass"], host=creds["mysql"]["host"], database=creds["mysql"]["db"])
         if conn.is_connected():
             logging.info("#Step : Mysql connection established successfully")
 
             cursor = conn.cursor()
-            cursor.execute("SHOW COLUMNS FROM {}".format(creds["mysql_table"]))
+            cursor.execute("SHOW COLUMNS FROM {}".format(creds["mysql"]["table"]))
             return cursor.fetchall()
 
     except Error as err:
