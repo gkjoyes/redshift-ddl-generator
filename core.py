@@ -1,53 +1,54 @@
-"""Core functionality for ddl generation is done here"""
-
+"""Core processing for ddl generation"""
 
 import json
 import re
 import sys
 
 
-# --------------generation of ddl corresponding to redshift is done here..
 def generate_ddl(table_info, creds, datatype_mapping, logging):
-    "Form mysql table info DDL generation is done here"
+    """
+    DDL generation is done with help of table description
+    """
 
-    logging.info("#Step : DDL generation is start...")
-
-    # ---------result file
+    logging.info("#Step: DDL generation is start...")
+    # ----file to write final ddl
     text_file = open("redshift_ddl.sql", "w")
 
-    # -------- data mapping types
+    # ----data types mapping
     try:
-        original_data_type = json.load(open(datatype_mapping))
+        with open(datatype_mapping) as f:
+            data_types = json.load(f)
     except Exception as err:
-        logging.warning("#Error : " + str(err))
-        sys.exit(0)
+        logging.warning("#Error: ", err)
+        sys.exit(1)
 
-    # --------start
+    # ----start
     text_file.write("CREATE TABLE {0}.{1}(".format(
         creds["redshift"]["schema"], creds["mysql"]["table"]))
 
     last_iteration = len(table_info) - 1
-    # --------table columns descriptions
+
+    # ----go through table descriptions
     for i, row in enumerate(table_info):
 
         text_file.write("\n\t")
-        # ----------- redshift: column name
+        # ----redshift: column name
         text_file.write(re.sub('(?<!^)(?=[A-Z])', '_', row[0]).lower())
 
-        # ---------- redshift : datatype
+        # ----redshift: datatype
         text_file.write(
-            "\t" + original_data_type[re.search(r'^\w+', row[1]).group(0)])
+            "\t" + data_types[re.search(r'^\w+', row[1]).group(0)])
 
-        # --------- if datatype is enum
+        # ----if datatype is enum
         if 'enum' in str(row[1]):
-
-            enum_values = list(
-                x for x in row[1][4:] if x != '\'' and x != ',' and x != '(' and x != ')')
+            enum_values = tuple(
+                x for x in row[1][4:]
+                if x != '\'' and x != ',' and x != '(' and x != ')')
 
             enum_max_len = len(max(enum_values))
             text_file.write("(" + str(enum_max_len * 2) + ")")
 
-        # ------ if datatype is varchar
+        # ----if datatype is varchar
         elif 'varchar' in str(row[1]):
             text_file.write(re.search(r'\(.*\)', row[1]).group(0))
 
@@ -56,4 +57,4 @@ def generate_ddl(table_info, creds, datatype_mapping, logging):
 
     text_file.write("\n" + ");")
     text_file.close()
-    logging.info("#Step : DDL generation completed...")
+    logging.info("#Step: DDL generation completed...")
