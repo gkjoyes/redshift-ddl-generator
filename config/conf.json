@@ -1,13 +1,13 @@
 {
-    "_comment": "db connection creditions given here..",
+    "_comment": "db connection creditions file",
     "mysql": {
-        "host": "192.168.0.2",
-        "db": "classicmodels",
-        "table": "employees",
-        "user": "kutty",
-        "pass": "root"
+        "host": "",
+        "db": "",
+        "table": "",
+        "user": "",
+        "pass": ""
     },
     "redshift": {
-        "schema": "sample"
+        "schema": ""
     }
 }

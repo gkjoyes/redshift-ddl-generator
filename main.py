@@ -4,6 +4,7 @@ import json
 import logging
 import sys
 from backend import read_mysql_table_description
+from validation import validate
 from core import generate_ddl
 
 
@@ -38,6 +39,11 @@ def generate_ddl_start():
     """
 
     creds = read_conf(CONF_FILE)
+    error = validate(creds, logging)
+    if error is not None:
+        logging.info("#Warning: %s", error)
+        sys.exit(1)
+
     table_info = read_mysql_table_description(creds, logging)
     generate_ddl(table_info, creds, MAPPING_FILE, logging)
 
