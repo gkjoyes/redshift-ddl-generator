@@ -8,13 +8,12 @@ from validation import validate
 from core import generate_ddl
 
 
-# ----files
+# Input files.
 CONF_FILE = "config/conf.json"
 MAPPING_FILE = "config/data_type_mapping.json"
 LOG_FILENAME = 'work.log'
 
-
-# ----logging
+# Initialize logging.
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 logging.getLogger().addHandler(logging.StreamHandler())
 

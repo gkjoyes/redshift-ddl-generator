@@ -11,14 +11,14 @@ def read_mysql_table_description(creds, logging):
 
     logging.info("#Step: Reading table description is start")
     try:
-        # ----connection
+        # Connect with MySQL.
         conn = MySQLConnection(
             user=creds["mysql"]["user"],
             password=creds["mysql"]["pass"],
             host=creds["mysql"]["host"],
             database=creds["mysql"]["db"])
 
-        # ----check connection status
+        # Check connection status.
         if conn.is_connected():
             logging.info("#Step: Mysql connection is established")
 

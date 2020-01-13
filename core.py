@@ -11,10 +11,10 @@ def generate_ddl(table_info, creds, datatype_mapping, logging):
     """
 
     logging.info("#Step: DDL generation is start...")
-    # ----file to write final ddl
+    # Initialize output file.
     text_file = open("redshift_ddl.sql", "w")
 
-    # ----data types mapping
+    # Data types mapping.
     try:
         with open(datatype_mapping) as f:
             data_types = json.load(f)
@@ -22,24 +22,25 @@ def generate_ddl(table_info, creds, datatype_mapping, logging):
         logging.warning("#Error: ", err)
         sys.exit(1)
 
-    # ----start
-    text_file.write("CREATE TABLE {0}.{1}(".format(
+    # Start ddl generation.
+    text_file.write("CREATE TABLE {0}.{1}".format(
         creds["redshift"]["schema"], creds["mysql"]["table"]))
 
     last_iteration = len(table_info) - 1
 
-    # ----go through table descriptions
+    # Go through table descriptions.
+    text_file.write("(")
     for i, row in enumerate(table_info):
 
         text_file.write("\n\t")
-        # ----redshift: column name
+        # Redshift: column name.
         text_file.write(re.sub('(?<!^)(?=[A-Z])', '_', row[0]).lower())
 
-        # ----redshift: datatype
+        # Redshift: datatype.
         text_file.write(
             "\t" + data_types[re.search(r'^\w+', row[1]).group(0)])
 
-        # ----if datatype is enum
+        # If datatype is enum.
         if 'enum' in str(row[1]):
             enum_values = tuple(
                 x for x in row[1][4:]
@@ -48,7 +49,7 @@ def generate_ddl(table_info, creds, datatype_mapping, logging):
             enum_max_len = len(max(enum_values))
             text_file.write("(" + str(enum_max_len * 2) + ")")
 
-        # ----if datatype is varchar
+        # If datatype is varchar.
         elif 'varchar' in str(row[1]):
             text_file.write(re.search(r'\(.*\)', row[1]).group(0))
 
